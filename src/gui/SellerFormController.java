@@ -48,7 +48,7 @@ public class SellerFormController implements Initializable {
         this.entity = entity;
     }
 
-    public void setDepartmentService(SellerService service) {
+    public void setSellerService(SellerService service) {
         this.service = service;
     }
     

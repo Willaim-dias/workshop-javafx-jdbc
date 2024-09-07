@@ -5,6 +5,7 @@ import db.DbIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
+import java.io.IOException;
 
 import java.net.URL;
 import java.util.Date;
@@ -16,7 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -24,6 +27,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 
 import javafx.stage.Stage;
 import model.entities.Seller;
@@ -44,19 +49,19 @@ public class SellerListController extends DataChangeListener implements Initiali
 
     @FXML
     private TableColumn<Seller, String> tableColumnEmail;
-    
+
     @FXML
     private TableColumn<Seller, Date> tableColumnBirthDate;
-    
+
     @FXML
     private TableColumn<Seller, Double> tableColumnBaseSalary;
-    
+
     @FXML
     private TableColumn<Seller, Seller> tableColumnEDIT;
 
     @FXML
     private TableColumn<Seller, Seller> tableColumnREMOVE;
-    
+
     @FXML
     private Button btNew;
 
@@ -66,7 +71,7 @@ public class SellerListController extends DataChangeListener implements Initiali
     public void onBtNewAction(ActionEvent event) {
         Stage parentStage = Utils.currentStage(event);
         Seller obj = new Seller();
-        //createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);
+        createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);
     }
 
     public void setSellerService(SellerService service) {
@@ -102,7 +107,6 @@ public class SellerListController extends DataChangeListener implements Initiali
         initRemoveButtons();
     }
 
-    /*
     private void createDialogForm(Seller obj, String absoluteName, Stage parentStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -125,7 +129,7 @@ public class SellerListController extends DataChangeListener implements Initiali
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
         }
     }
-     */
+
     @Override
     public void onDataChanged() {
         updateTableView();
@@ -145,11 +149,11 @@ public class SellerListController extends DataChangeListener implements Initiali
                     return;
                 }
 
-                setGraphic(button);/*
+                setGraphic(button);
                 button.setOnAction(
                         event -> createDialogForm(
                                 obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
-                 */
+
             }
         });
     }
