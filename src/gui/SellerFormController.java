@@ -6,9 +6,12 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -125,11 +128,32 @@ public class SellerFormController implements Initializable {
         ValidationException exception = new ValidationException("Validation error");
 
         obj.setId(Utils.tryParseToInt(txtId.getText()));
+
         if (txtName.getText() == null || txtName.getText().trim().equals("")) {
             exception.addError("name", "Field can't be empty");
         }
-
         obj.setName(txtName.getText());
+
+        if (txtEmail.getText() == null || txtEmail.getText().trim().equals("")) {
+            exception.addError("email", "Field can't be empty");
+        }
+        obj.setEmail(txtEmail.getText());
+
+        if (dpBirthDate.getValue() == null) {
+            exception.addError("birthDate", "Field can't be empty");
+        } else {
+            Instant instant = dpBirthDate.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+            obj.setBirthDate(Date.from(instant));
+
+        }
+
+        if (txtBaseSalay.getText() == null || txtBaseSalay.getText().trim().equals("")) {
+            exception.addError("baseSalay", "Field can't be empty");
+        }
+        obj.setBaseSalary(Utils.tryParseToDouble(txtBaseSalay.getText()));
+
+        obj.setDepartment(comboBoxDepartment.getValue());
+
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
@@ -172,7 +196,7 @@ public class SellerFormController implements Initializable {
             comboBoxDepartment.getSelectionModel().selectFirst();
         } else {
             comboBoxDepartment.setValue(entity.getDepartment());
-        }      
+        }
     }
 
     public void loadAssociatedObject() {
@@ -186,9 +210,14 @@ public class SellerFormController implements Initializable {
 
     private void setErrorMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-        if (fields.contains("name")) {
-            labelErroName.setText(errors.get("name"));
-        }
+
+        labelErroName.setText((fields.contains("name")) ? errors.get("name") : "");
+
+        labelErroEmail.setText((fields.contains("email")) ? errors.get("email") : "");
+
+        labelErroBaseSalay.setText((fields.contains("baseSalay")) ? errors.get("baseSalay") : "");
+
+        labelErroBirthDate.setText((fields.contains("birthDate")) ? errors.get("birthDate") : "");
     }
 
     private void initializeComboBoxDepartment() {
