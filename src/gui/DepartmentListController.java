@@ -1,7 +1,6 @@
 package gui;
 
 import application.Main;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.REUtil;
 import db.DbIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
@@ -110,6 +109,7 @@ public class DepartmentListController extends DataChangeListener implements Init
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.showAndWait();
         } catch (IOException e) {
+            e.printStackTrace();
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
         }
     }
